@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Semester {
+  id           Int      @id() @default(autoincrement())
+  semesterTerm String   @map("semester_term")
+  courses      Course[]
+
+  @@map("semester")
+}
+
+model Course {
+  id           Int        @id() @default(autoincrement())
+  courseCode   String     @map("course_code")
+  courseName   String     @map("course_name")
+  creditNumber Int
+  courseType   CourseType @map("course_type")
+  room         String
+  teacherName  String
+  courseDay    Int        @map("course_day") // bắt nhập từ 1 tới 7
+  courseTime   String     @map("course_time")
+  startDate    DateTime   @map("start_date")
+  endDate      DateTime   @map("end_date")
+  semesterId   Int
+  semester     Semester   @relation(fields: [semesterId], references: [id])
+
+  @@map("course")
+}
+
+enum CourseType {
+  new
+  retake
+}
