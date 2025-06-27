@@ -226,70 +226,14 @@ export default function Tkb() {
 	}
 
 	return (
-		<Tabs className="p-5" defaultValue="addCourse">
+		<Tabs className="p-5" defaultValue="tkb">
 			<TabsList className="mb-4">
 				<TabsTrigger value="tkb">Thời khóa biểu</TabsTrigger>
-				<TabsTrigger value="addSemester">Thông tin học kỳ</TabsTrigger>
-				<TabsTrigger value="addCourse">Thêm môn học</TabsTrigger>
+				<TabsTrigger value="addSemester">Take note</TabsTrigger>
+				<TabsTrigger value="addCourse">Todo list</TabsTrigger>
 			</TabsList>
 
 			<TabsContent value="tkb">
-				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4">
-					{/* Timetable view implementation can go here */}
-					<div className="col-span-full">
-						<p>Tính năng hiển thị thời khóa biểu đang được phát triển</p>
-					</div>
-				</div>
-			</TabsContent>
-
-			<TabsContent value="addSemester">
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-					<div>
-						<form
-							onSubmit={handleSemesterFormSubmit}
-							className="border rounded-md p-4"
-						>
-							<h3 className="text-lg font-medium mb-4">Thêm học kỳ mới</h3>
-							<div className="mb-4">
-								<Label htmlFor="year" className="block mb-2">
-									Niên học
-								</Label>
-								<Input
-									type="text"
-									id="year"
-									name="year"
-									placeholder="Ví dụ: 2023-2024"
-									value={semesterFormData.year}
-									onChange={handleInputChange}
-									className="w-full"
-								/>
-							</div>
-							<Button type="submit" disabled={isLoading}>
-								{isLoading ? "Đang xử lý..." : "Thêm học kỳ"}
-							</Button>
-						</form>
-					</div>
-
-					<div>
-						<div className="border rounded-md p-4">
-							<h3 className="text-lg font-medium mb-4">Danh sách học kỳ</h3>
-							{semesters.length > 0 ? (
-								<ul className="space-y-2">
-									{semesters.map((semester) => (
-										<li key={semester.id} className="p-2 border rounded">
-											Học kỳ {semester.semesterTerm}
-										</li>
-									))}
-								</ul>
-							) : (
-								<p>Chưa có học kỳ nào</p>
-							)}
-						</div>
-					</div>
-				</div>
-			</TabsContent>
-
-			<TabsContent value="addCourse">
 				<div className="grid grid-cols-1 lg:grid-cols-8 gap-5">
 					<div className="lg:col-span-2">
 						<form
@@ -322,11 +266,9 @@ export default function Tkb() {
 						{semesters.length > 0 ? (
 							semesters.map((semester) => {
 								const semesterCourses = getCoursesBySemester(semester.id);
-								console.log(courses);
-								// console.log(semesterCourses);
 
 								return (
-									<Table key={semester.id} className="mb-8 border rounded">
+									<Table key={semester.id} className="mb-8 border">
 										<TableCaption>
 											Thông tin học phần học kỳ {semester.semesterTerm}
 										</TableCaption>
@@ -539,6 +481,18 @@ export default function Tkb() {
 							</div>
 						)}
 					</div>
+				</div>
+			</TabsContent>
+
+			<TabsContent value="addSemester">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+					
+				</div>
+			</TabsContent>
+
+			<TabsContent value="addCourse">
+				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4">
+					
 				</div>
 			</TabsContent>
 		</Tabs>
