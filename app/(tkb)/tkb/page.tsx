@@ -229,8 +229,8 @@ export default function Tkb() {
 		<Tabs className="p-5" defaultValue="tkb">
 			<TabsList className="mb-4">
 				<TabsTrigger value="tkb">Thời khóa biểu</TabsTrigger>
-				<TabsTrigger value="addSemester">Take note</TabsTrigger>
-				<TabsTrigger value="addCourse">Todo list</TabsTrigger>
+				<TabsTrigger value="todo-list">Todo list</TabsTrigger>
+				<TabsTrigger value="take-note">Take note</TabsTrigger>
 			</TabsList>
 
 			<TabsContent value="tkb">
@@ -484,15 +484,15 @@ export default function Tkb() {
 				</div>
 			</TabsContent>
 
-			<TabsContent value="addSemester">
+			<TabsContent value="todo-list">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-					
+					<span className="animate-pulse">Tính năng todo list kiểu bảng kanban (Trello, Jira) On going...</span>
 				</div>
 			</TabsContent>
 
-			<TabsContent value="addCourse">
+			<TabsContent value="take-note">
 				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4">
-					
+					<span className="animate-pulse">Tính năng tạo note, theo Course. Mỗi Course là 1 Note theo từng buổi. Note bằng định dạng markdown.</span>
 				</div>
 			</TabsContent>
 		</Tabs>
