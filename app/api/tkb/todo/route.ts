@@ -12,12 +12,12 @@ const todo = z.object({
 
 export async function GET() {
 	try {
-		return await prisma.todo.findMany({});
+		const todos = await prisma.todo.findMany({});
+		return NextResponse.json(todos); // ✅ OK: trả về Response
 	} catch (error) {
-		return NextResponse.json({ error: error }, { status: 500 });
+		return NextResponse.json({ error }, { status: 500 });
 	}
 }
-
 export async function POST(req: NextRequest) {
 	try {
 		const body = await req.json();
