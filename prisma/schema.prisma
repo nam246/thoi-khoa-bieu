@@ -14,6 +14,7 @@ datasource db {
 model Semester {
   id           Int      @id() @default(autoincrement())
   semesterTerm String   @map("semester_term")
+  onGoing      Boolean  @default(false) @map("on_going")
   courses      Course[]
 
   @@map("semester")
@@ -26,15 +27,26 @@ model Course {
   creditNumber Int
   courseType   CourseType @map("course_type")
   room         String
-  teacherName  String
+  teacherName  String     @map("teacher_name")
   courseDay    Int        @map("course_day") // bắt nhập từ 1 tới 7
   courseTime   String     @map("course_time")
   startDate    DateTime   @map("start_date")
   endDate      DateTime   @map("end_date")
-  semesterId   Int
+  semesterId   Int        @map("semester_id")
   semester     Semester   @relation(fields: [semesterId], references: [id])
+  Todo         Todo[]
 
   @@map("course")
+}
+
+model Todo {
+  id          Int    @id() @default(autoincrement())
+  title       String
+  description String
+  course      Course @relation(fields: [courseId], references: [id])
+  courseId    Int    @map("course_id")
+
+  @@map("todo")
 }
 
 enum CourseType {

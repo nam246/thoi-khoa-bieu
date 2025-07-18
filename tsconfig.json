@@ -25,6 +25,6 @@
       "@lib/*": ["./lib/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(tkb)/tkb/_page.tsx", "app/api/tkb/v2/route.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/tkb/_page.tsx", "app/api/tkb/v2/route.tsx"],
   "exclude": ["node_modules"]
 }

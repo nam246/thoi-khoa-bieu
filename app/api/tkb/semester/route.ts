@@ -2,6 +2,11 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
+
+const semester = z.object({
+	semesterTerm: z.string().transform((val) => val.replaceAll(" ", "")),
+});
 
 const prisma = new PrismaClient();
 
@@ -18,14 +23,14 @@ export async function GET() {
 export async function POST(req: NextRequest) {
 	try {
 		const body = await req.json();
-		const semester = await prisma.semester.create({
-			data: {
-				semesterTerm: body.year,
-			},
+		const data = semester.parse(body);
+
+		await prisma.semester.create({
+			data: data,
 		});
 
 		return NextResponse.json({
-			created: semester.semesterTerm,
+			created: data,
 			status: 201,
 		});
 	} catch (error) {

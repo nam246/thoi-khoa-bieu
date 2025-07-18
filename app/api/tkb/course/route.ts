@@ -35,8 +35,6 @@ const courseSchema = z.object({
 export async function GET() {
 	try {
 		const courses = await prisma.course.findMany();
-		console.log(courses);
-
 		return NextResponse.json(courses, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: error }, { status: 500 });
