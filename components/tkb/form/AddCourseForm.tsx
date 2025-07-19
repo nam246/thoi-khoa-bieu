@@ -82,7 +82,7 @@ export default function AddCourseForm({ semesterId }: { semesterId: number }) {
 			console.log("submitted data", submitData);
 
 			// Gọi API để thêm course
-			await axios.post("/api/tkb/course", submitData);
+			await axios.post("/api/tkb/course", JSON.stringify(submitData));
 
 			toast.success("Thêm môn học thành công!", {
 				description: `Đã thêm môn học ${data.courseName}`,
