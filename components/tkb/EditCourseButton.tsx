@@ -24,7 +24,7 @@ export default function EditCourseButton({ courseId }: { courseId: number }) {
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Are you absolutely sure?</DialogTitle>
+					<DialogTitle>Truyền tham số {courseId} để lấy thông tin course truyền vào</DialogTitle>
 					<DialogDescription>
 						Khi làm tới nút này, sử component này lại thành Sheet component
 					</DialogDescription>
