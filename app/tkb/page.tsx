@@ -33,35 +33,29 @@ import TodoForm from "@/components/tkb/form/TodoForm";
 import AddSemesterForm from "@/components/tkb/form/AddSemesterForm";
 import AddCourseForm from "@/components/tkb/form/AddCourseForm";
 import DeleteCourseButton from "@/components/tkb/DeleteCourseButton";
-import { Trash2 } from "lucide-react";
+import { Trash2, Pencil } from "lucide-react";
+import EditCourseButton from "@/components/tkb/EditCourseButton";
 
-// QUAN TRỌNG: Disable caching
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function Tkb() {
-	// Add timestamp để debug caching
 	console.log("Tkb component rendering at:", new Date().toISOString());
 
-	const semesters = await prisma.semester.findMany();
-	const courses = await prisma.course.findMany();
-	const todoList = await prisma.todo.findMany();
+	// const semesters = await prisma.semester.findMany();
+	// const courses = await prisma.course.findMany();
+	// const todoList = await prisma.todo.findMany();
 
-	console.log(
-		"Data fetched - Semesters:",
-		semesters.length,
-		"Courses:",
-		courses.length,
-		"Todos:",
-		todoList.length
-	);
+	const [semesters, courses, todoList] = await Promise.all([
+		prisma.semester.findMany(),
+		prisma.course.findMany(),
+		prisma.todo.findMany(),
+	]);
 
-	// Filter courses by semester
 	const getCoursesBySemester = (semesterId: number) => {
 		return courses.filter((course) => course.semesterId === semesterId);
 	};
 
-	// FIXED: Sử dụng find thay vì filter để tránh lỗi index
 	const getCourseById = (id: number) => {
 		return courses.find((course) => course.id === id);
 	};
@@ -150,8 +144,9 @@ export default async function Tkb() {
 																? new Date(course.endDate).toLocaleDateString("vi-VN")
 																: ""}
 														</TableCell>
-														<TableCell>
+														<TableCell className="flex justify-center items-center gap-1">
 															<DeleteCourseButton courseId={course.id} />
+															<EditCourseButton courseId={course.id} />
 														</TableCell>
 													</TableRow>
 												))
@@ -181,27 +176,27 @@ export default async function Tkb() {
 						<TodoForm courses={courses} />
 					</div>
 					<div className="lg:col-span-6">
-						<div className="">
+						<div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-5">
 							{todoList.map((todo, index) => {
 								const course = getCourseById(todo.courseId);
 								return (
 									<Card key={todo.id || index}>
-										{" "}
-										{/* Sử dụng unique key */}
 										<CardHeader>
 											<CardTitle>{todo.title}</CardTitle>
 											<CardDescription></CardDescription>
-											<CardAction>
-												<Trash2 />
+											<CardAction className="space-x-1">
+												<Button className="bg-red-500">
+													<Trash2 />
+												</Button>
+												<Button>
+													<Pencil />
+												</Button>
 											</CardAction>
 										</CardHeader>
 										<CardContent>
 											<p>{todo.description}</p>
 										</CardContent>
-										<CardFooter>
-											{/* FIXED: Handle undefined course */}
-											{course ? course.courseName : "Không tìm thấy môn học"}
-										</CardFooter>
+										<CardFooter>{course ? course.courseName : ""}</CardFooter>
 									</Card>
 								);
 							})}

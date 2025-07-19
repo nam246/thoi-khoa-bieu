@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
 	semesterTerm: z.string().min(2, {
@@ -25,6 +26,8 @@ const FormSchema = z.object({
 });
 
 export default function AddSemesterForm() {
+	const router = useRouter();
+
 	const semesterFormData = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -46,7 +49,7 @@ export default function AddSemesterForm() {
 				),
 			});
 
-			console.log(JSON.stringify(data, null, 2));
+			router.refresh();
 		} catch (error) {
 			let errorMessage = "Có lỗi xảy ra khi thêm môn học";
 

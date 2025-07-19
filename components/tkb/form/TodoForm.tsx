@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Course } from "@/lib/types";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
 	courseId: z.string(),
@@ -36,6 +37,8 @@ const FormSchema = z.object({
 });
 
 export default function TodoForm({ courses }: { courses: Course[] }) {
+	const router = useRouter();
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -63,6 +66,9 @@ export default function TodoForm({ courses }: { courses: Course[] }) {
 					</pre>
 				),
 			});
+
+			router.refresh();
+			
 		} catch (error) {
 			let errorMessage = "Có lỗi xảy ra khi thêm môn học";
 

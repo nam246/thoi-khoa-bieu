@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -54,6 +55,8 @@ const FormSchema = z.object({
 });
 
 export default function AddCourseForm({ semesterId }: { semesterId: number }) {
+	const router = useRouter();
+
 	const courseFormData = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -96,6 +99,7 @@ export default function AddCourseForm({ semesterId }: { semesterId: number }) {
 
 			// Reset form sau khi thêm thành công
 			courseFormData.reset();
+			router.refresh();
 		} catch (error) {
 			console.error("Error adding course:", error);
 
