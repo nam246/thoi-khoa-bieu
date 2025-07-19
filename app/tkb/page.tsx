@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma"; // Import từ file riêng
 import {
 	Sheet,
 	SheetClose,
@@ -35,20 +35,35 @@ import AddCourseForm from "@/components/tkb/form/AddCourseForm";
 import DeleteCourseButton from "@/components/tkb/DeleteCourseButton";
 import { Trash2 } from "lucide-react";
 
-const prisma = new PrismaClient();
+// QUAN TRỌNG: Disable caching
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function Tkb() {
+	// Add timestamp để debug caching
+	console.log("Tkb component rendering at:", new Date().toISOString());
+
 	const semesters = await prisma.semester.findMany();
 	const courses = await prisma.course.findMany();
 	const todoList = await prisma.todo.findMany();
+
+	console.log(
+		"Data fetched - Semesters:",
+		semesters.length,
+		"Courses:",
+		courses.length,
+		"Todos:",
+		todoList.length
+	);
 
 	// Filter courses by semester
 	const getCoursesBySemester = (semesterId: number) => {
 		return courses.filter((course) => course.semesterId === semesterId);
 	};
 
+	// FIXED: Sử dụng find thay vì filter để tránh lỗi index
 	const getCourseById = (id: number) => {
-		return courses.filter((course) => course.id === id);
+		return courses.find((course) => course.id === id);
 	};
 
 	return (
@@ -165,23 +180,31 @@ export default async function Tkb() {
 					<div className="lg:col-span-2">
 						<TodoForm courses={courses} />
 					</div>
-					<div className="lg-col-span-6">
+					<div className="lg:col-span-6">
 						<div className="">
-							{todoList.map((todo, index) => (
-								<Card key={index}>
-									<CardHeader>
-										<CardTitle>{todo.title}</CardTitle>
-										<CardDescription></CardDescription>
-										<CardAction>
-											<Trash2 />
-										</CardAction>
-									</CardHeader>
-									<CardContent>
-										<p>{todo.description}</p>
-									</CardContent>
-									<CardFooter>{getCourseById(todo.courseId)[0].courseName}</CardFooter>
-								</Card>
-							))}
+							{todoList.map((todo, index) => {
+								const course = getCourseById(todo.courseId);
+								return (
+									<Card key={todo.id || index}>
+										{" "}
+										{/* Sử dụng unique key */}
+										<CardHeader>
+											<CardTitle>{todo.title}</CardTitle>
+											<CardDescription></CardDescription>
+											<CardAction>
+												<Trash2 />
+											</CardAction>
+										</CardHeader>
+										<CardContent>
+											<p>{todo.description}</p>
+										</CardContent>
+										<CardFooter>
+											{/* FIXED: Handle undefined course */}
+											{course ? course.courseName : "Không tìm thấy môn học"}
+										</CardFooter>
+									</Card>
+								);
+							})}
 						</div>
 					</div>
 				</div>

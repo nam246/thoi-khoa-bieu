@@ -41,7 +41,7 @@ export default function AddSemesterForm() {
 			toast("Đã thêm học kỳ mới", {
 				description: (
 					<pre className="mt-2 w-[320px] rounded-md p-4">
-						<code className="text-black">{JSON.stringify(data, null, 2)}</code>
+						<code className="text-black">{data.semesterTerm}</code>
 					</pre>
 				),
 			});
