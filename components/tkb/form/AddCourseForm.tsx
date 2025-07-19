@@ -85,7 +85,13 @@ export default function AddCourseForm({ semesterId }: { semesterId: number }) {
 			await axios.post("/api/tkb/course", JSON.stringify(submitData));
 
 			toast.success("Thêm môn học thành công!", {
-				description: `Đã thêm môn học ${data.courseName}`,
+				description: (
+					<pre className="mt-2 w-[320px] rounded-md p-4">
+						<code className="text-black">
+							Đã thêm môn học {submitData.courseName}
+						</code>
+					</pre>
+				),
 			});
 
 			// Reset form sau khi thêm thành công
@@ -99,8 +105,12 @@ export default function AddCourseForm({ semesterId }: { semesterId: number }) {
 				errorMessage = error.response?.data?.message || error.message;
 			}
 
-			toast.error("Lỗi!", {
-				description: errorMessage,
+			toast.error(errorMessage, {
+				description: (
+					<pre className="mt-2 w-[320px] rounded-md p-4">
+						<code className="text-red-500">Thử lại sau</code>
+					</pre>
+				),
 			});
 		}
 	}

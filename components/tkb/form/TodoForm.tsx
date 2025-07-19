@@ -46,20 +46,32 @@ export default function TodoForm({ courses }: { courses: Course[] }) {
 	});
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
-		console.log(JSON.stringify(data, null, 2));
-		const submitData = {
-			...data,
-			courseId: parseInt(data.courseId),
-		};
-		await axios.post("/api/tkb/todo", JSON.stringify(submitData, null, 2));
+		try {
+			const submitData = {
+				...data,
+				courseId: parseInt(data.courseId),
+			};
+			
+			await axios.post("/api/tkb/todo", JSON.stringify(submitData, null, 2));
 
-		toast("You submitted the following values", {
-			description: (
-				<pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-					<code className="text-white">{JSON.stringify(data, null, 2)}</code>
-				</pre>
-			),
-		});
+			form.reset();
+
+			toast("Đã thêm thành công", {
+				description: (
+					<pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
+						<code className="text-white">{data.title}</code>
+					</pre>
+				),
+			});
+		} catch (error) {
+			toast("Đã có lỗi xảy ra", {
+				description: (
+					<pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
+						<code className="text-white">Xin vui lòng thử lại sau</code>
+					</pre>
+				),
+			});
+		}
 	}
 
 	return (

@@ -49,10 +49,10 @@ export default function AddSemesterForm() {
 			console.log(JSON.stringify(data, null, 2));
 		} catch (error) {
 			console.error("Error submitting semester:", error);
-			toast("Đã thêm học kỳ mới", {
+			toast("Đã có lỗi xảy ra", {
 				description: (
 					<pre className="mt-2 w-[320px] rounded-md p-4">
-						<code className="text-black">Error submitting semester</code>
+						<code className="text-red-500">error</code>
 					</pre>
 				),
 			});
