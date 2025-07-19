@@ -48,11 +48,16 @@ export default function AddSemesterForm() {
 
 			console.log(JSON.stringify(data, null, 2));
 		} catch (error) {
+			let errorMessage = "Có lỗi xảy ra khi thêm môn học";
+
+			if (axios.isAxiosError(error)) {
+				errorMessage = error.response?.data?.message || error.message;
+			}
 			console.error("Error submitting semester:", error);
 			toast("Đã có lỗi xảy ra", {
 				description: (
 					<pre className="mt-2 w-[320px] rounded-md p-4">
-						<code className="text-red-500">error</code>
+						<code className="text-red-500">{errorMessage}</code>
 					</pre>
 				),
 			});

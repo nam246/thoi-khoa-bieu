@@ -51,7 +51,7 @@ export default function TodoForm({ courses }: { courses: Course[] }) {
 				...data,
 				courseId: parseInt(data.courseId),
 			};
-			
+
 			await axios.post("/api/tkb/todo", JSON.stringify(submitData, null, 2));
 
 			form.reset();
@@ -64,10 +64,16 @@ export default function TodoForm({ courses }: { courses: Course[] }) {
 				),
 			});
 		} catch (error) {
+			let errorMessage = "Có lỗi xảy ra khi thêm môn học";
+
+			if (axios.isAxiosError(error)) {
+				errorMessage = error.response?.data?.message || error.message;
+			}
+
 			toast("Đã có lỗi xảy ra", {
 				description: (
 					<pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-						<code className="text-white">Xin vui lòng thử lại sau</code>
+						<code className="text-white">{errorMessage}</code>
 					</pre>
 				),
 			});
