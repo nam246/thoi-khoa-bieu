@@ -35,17 +35,12 @@ import AddCourseForm from "@/components/tkb/form/AddCourseForm";
 import DeleteCourseButton from "@/components/tkb/DeleteCourseButton";
 import { Trash2, Pencil } from "lucide-react";
 import EditCourseButton from "@/components/tkb/EditCourseButton";
+import { TimeTable } from "@/components/tkb/TimeTable";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function Tkb() {
-	console.log("Tkb component rendering at:", new Date().toISOString());
-
-	// const semesters = await prisma.semester.findMany();
-	// const courses = await prisma.course.findMany();
-	// const todoList = await prisma.todo.findMany();
-
 	const [semesters, courses, todoList] = await Promise.all([
 		prisma.semester.findMany(),
 		prisma.course.findMany(),
@@ -61,14 +56,18 @@ export default async function Tkb() {
 	};
 
 	return (
-		<Tabs className="p-5" defaultValue="tkb">
+		<Tabs className="p-5" defaultValue="current-tkb">
 			<TabsList className="mb-4">
-				<TabsTrigger value="tkb">Thời khóa biểu</TabsTrigger>
+				<TabsTrigger value="current-tkb">Thời khóa biểu</TabsTrigger>
+				<TabsTrigger value="add">Thêm môn học</TabsTrigger>
 				<TabsTrigger value="todo-list">Todo list</TabsTrigger>
-				<TabsTrigger value="take-note">Take note</TabsTrigger>
 			</TabsList>
 
-			<TabsContent value="tkb">
+			<TabsContent value="current-tkb">
+				<TimeTable />
+			</TabsContent>
+
+			<TabsContent value="add">
 				<div className="grid grid-cols-1 lg:grid-cols-8 gap-5">
 					<div className="lg:col-span-2">
 						<AddSemesterForm />
@@ -146,7 +145,7 @@ export default async function Tkb() {
 														</TableCell>
 														<TableCell className="flex justify-center items-center gap-1">
 															<DeleteCourseButton courseId={course.id} />
-															<EditCourseButton courseId={course.id} />
+															<EditCourseButton initialData={course} />
 														</TableCell>
 													</TableRow>
 												))
@@ -202,15 +201,6 @@ export default async function Tkb() {
 							})}
 						</div>
 					</div>
-				</div>
-			</TabsContent>
-
-			<TabsContent value="take-note">
-				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4">
-					<span className="animate-pulse">
-						Tính năng tạo note, theo Course. Mỗi Course là 1 Note theo từng buổi. Note
-						bằng định dạng markdown.
-					</span>
 				</div>
 			</TabsContent>
 		</Tabs>

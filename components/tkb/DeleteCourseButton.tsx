@@ -1,5 +1,5 @@
 "use client";
-// import axios from "axios";
+import axios from "axios";
 import { toast } from "sonner";
 import {
 	Dialog,
@@ -17,7 +17,7 @@ import { Trash2 } from "lucide-react";
 export default function DeleteCourseButton({ courseId }: { courseId: number }) {
 	const handleDeleteCourse = async (courseId: number) => {
 		try {
-			// await axios.delete(`/api/tkb/${courseId}`);
+			await axios.delete(`/api/tkb/course/${courseId}`);
 			console.log("deleted", courseId);
 			toast("You submitted the following values", {
 				description: (
