@@ -59,21 +59,22 @@ export async function TimeTable() {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{currentCourses?.map((course) => (
-					<TableRow key={course.id}>
-						<TableCell className="font-medium">{course.courseDay}</TableCell>
-						<TableCell>{course.courseCode}</TableCell>
-						<TableCell>{course.courseName}</TableCell>
-						<TableCell>{course.courseName}</TableCell>
-						<TableCell>{course.room}</TableCell>
-						<TableCell className="text-right">
-							{course.endDate.toLocaleDateString("en-GB")}
-						</TableCell>
-						<TableCell className="text-right">
-							{course.endDate ? formatTimeRemaining(course.endDate) : ""}
-						</TableCell>
-					</TableRow>
-				))}
+				{currentCourses.length > 0 &&
+					currentCourses.map((course) => (
+						<TableRow key={course.id}>
+							<TableCell className="font-medium">{course.courseDay}</TableCell>
+							<TableCell>{course.courseCode}</TableCell>
+							<TableCell>{course.courseName}</TableCell>
+							<TableCell>{course.courseName}</TableCell>
+							<TableCell>{course.room}</TableCell>
+							<TableCell className="text-right">
+								{course.endDate.toLocaleDateString("en-GB")}
+							</TableCell>
+							<TableCell className="text-right">
+								{course.endDate ? formatTimeRemaining(course.endDate) : ""}
+							</TableCell>
+						</TableRow>
+					))}
 			</TableBody>
 			<TableFooter>
 				<TableRow>
